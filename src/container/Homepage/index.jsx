@@ -24,7 +24,7 @@ const PokemonGrid = ({ processedPokemonList, isLoading }) => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 gap-3.5 mt-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-3">
         {Array.from({ length: 8 }).map((_, index) => (
           <div
             key={index}
@@ -59,8 +59,7 @@ const PokemonGrid = ({ processedPokemonList, isLoading }) => {
 
   return (
     <div className="flex flex-col justify-between flex-1">
-      {/* 2-Column Mobile-First Cards Grid */}
-      <div className="grid grid-cols-2 gap-3.5 mt-1.5">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-2">
         <AnimatePresence mode="popLayout">
           {visiblePokemon.map((pokemon) => (
             <PokemonCard key={pokemon.name} name={pokemon.name} />

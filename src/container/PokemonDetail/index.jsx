@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -40,7 +40,17 @@ const getEvolutionList = (chainNode) => {
 const PokemonDetail = () => {
   const { name } = useParams();
   const navigate = useNavigate();
-  const { addPokemon } = usePokemonStore();
+  const location = useLocation();
+  const { addPokemon, myPokemon } = usePokemonStore();
+
+  const isFromBag = location.state?.from === "bag";
+  const targetUniqueId = location.state?.uniqueId;
+
+  // Search for the caught Pokémon instance by uniqueId or name
+  const caughtInstance = myPokemon.find((p) =>
+    (targetUniqueId && p.uniqueId === targetUniqueId) ||
+    (!targetUniqueId && p.name.toLowerCase() === name.toLowerCase())
+  );
 
   // Catch gameplay states
   const [catchState, setCatchState] = useState("idle"); // idle | throwing | success | fail
@@ -165,12 +175,12 @@ const PokemonDetail = () => {
     <div className="flex flex-col gap-4 w-full relative">
       {/* Back Button */}
       <div className="self-start">
-        <Link to="/" className="no-underline">
+        <Link to={isFromBag ? "/my-pokemon" : "/"} className="no-underline">
           <Button variant="secondary" className="px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
-            <span>Back to Pokedex</span>
+            <span>{isFromBag ? "Back to Bag" : "Back to Pokedex"}</span>
           </Button>
         </Link>
       </div>
@@ -189,14 +199,16 @@ const PokemonDetail = () => {
 
         {/* Title block */}
         <div className="text-center w-full z-10">
-          <span className="text-[10px] font-mono font-bold text-gray-500">
+          <span className="text-[10px] font-mono font-bold text-gray-500 dark:text-gray-400">
             {padId(pokemon.id)}
           </span>
           <h2 className="m-0 mt-0.5 text-xl font-extrabold tracking-wide text-gray-800 dark:text-gray-100">
-            {capitalize(pokemon.name)}
+            {caughtInstance ? caughtInstance.nickname : capitalize(pokemon.name)}
           </h2>
           <p className="text-[9px] font-extrabold text-gray-500 dark:text-gray-400 mt-0.5 tracking-wider uppercase">
-            {categoryName}
+            {caughtInstance && caughtInstance.nickname.toLowerCase() !== pokemon.name.toLowerCase()
+              ? `${capitalize(pokemon.name)} • ${categoryName}`
+              : categoryName}
           </p>
         </div>
 
@@ -207,7 +219,7 @@ const PokemonDetail = () => {
             <div className="w-20 h-20 bg-black/5 dark:bg-white/5 border border-gray-400/10 dark:border-gray-800/10 rounded-2xl flex items-center justify-center p-2">
               <img src={animatedFront} alt={pokemon.name} className="w-14 h-14 object-contain" />
             </div>
-            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Normal</span>
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 tracking-wider uppercase">Normal</span>
           </div>
 
           {/* Shiny Animated GIF */}
@@ -215,7 +227,7 @@ const PokemonDetail = () => {
             <div className="w-20 h-20 bg-black/5 dark:bg-white/5 border border-gray-400/10 dark:border-gray-800/10 rounded-2xl flex items-center justify-center p-2">
               <img src={animatedShiny} alt={`${pokemon.name}-shiny`} className="w-14 h-14 object-contain" />
             </div>
-            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-400 tracking-wider uppercase">Shiny</span>
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 tracking-wider uppercase">Shiny</span>
           </div>
         </div>
 
@@ -276,7 +288,7 @@ const PokemonDetail = () => {
       >
         {/* Description */}
         <div className="space-y-1">
-          <h3 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+          <h3 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-300">
             Description
           </h3>
           <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed m-0">
@@ -285,28 +297,28 @@ const PokemonDetail = () => {
         </div>
 
         {/* Profile Details */}
-        <div className="grid grid-cols-2 gap-3 border-t border-b border-gray-250/20 dark:border-gray-800/20 py-3">
+        <div className="grid grid-cols-2 gap-3 border-t border-b border-gray-250/20 dark:border-gray-800/40 py-3">
           <div className="space-y-0.5">
-            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-450 uppercase tracking-wide">
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 uppercase tracking-wide">
               Height
             </span>
-            <p className="m-0 text-xs font-bold text-gray-850 dark:text-gray-150">
+            <p className="m-0 text-xs font-bold text-gray-800 dark:text-white">
               {(pokemon.height / 10).toFixed(1)} m
             </p>
           </div>
           <div className="space-y-0.5">
-            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-450 uppercase tracking-wide">
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 uppercase tracking-wide">
               Weight
             </span>
-            <p className="m-0 text-xs font-bold text-gray-850 dark:text-gray-150">
+            <p className="m-0 text-xs font-bold text-gray-800 dark:text-white">
               {(pokemon.weight / 10).toFixed(1)} kg
             </p>
           </div>
           <div className="col-span-2 space-y-0.5">
-            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-450 uppercase tracking-wide">
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 uppercase tracking-wide">
               Abilities
             </span>
-            <p className="m-0 text-xs font-bold text-gray-850 dark:text-gray-150 capitalize">
+            <p className="m-0 text-xs font-bold text-gray-800 dark:text-white capitalize">
               {pokemon.abilities?.map((a) => a.ability.name.replace("-", " ")).join(", ")}
             </p>
           </div>
@@ -314,7 +326,7 @@ const PokemonDetail = () => {
 
         {/* Base Stats */}
         <div className="space-y-2">
-          <h3 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-1">
+          <h3 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-300 mb-1">
             Base Stats
           </h3>
           <div className="space-y-2">
@@ -328,13 +340,13 @@ const PokemonDetail = () => {
 
               return (
                 <div key={stat.stat.name} className="flex items-center text-[10px] font-bold">
-                  <span className="w-16 text-gray-500 dark:text-gray-450 text-[9px] uppercase tracking-wide">
+                  <span className="w-16 text-gray-500 dark:text-gray-300 text-[9px] uppercase tracking-wide">
                     {statLabel}
                   </span>
                   <span className="w-8 text-right font-mono font-bold text-gray-800 dark:text-gray-100 pr-2.5">
                     {value}
                   </span>
-                  <div className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-850 rounded-full overflow-hidden">
+                  <div className="flex-1 h-1.5 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
                     <div
                       style={{
                         width: `${percentage}%`,
@@ -379,7 +391,7 @@ const PokemonDetail = () => {
                     className={`no-underline flex flex-col items-center p-2.5 rounded-xl border transition-all duration-200 group ${
                       isCurrent
                         ? "bg-red-500/10 border-red-500/30 scale-102"
-                        : "border-gray-200/50 dark:border-gray-850/50 hover:bg-black/5 dark:hover:bg-white/5"
+                        : "border-gray-200/50 dark:border-gray-800/50 hover:bg-black/5 dark:hover:bg-white/5"
                     }`}
                   >
                     <img
@@ -479,7 +491,7 @@ const PokemonDetail = () => {
                       onChange={(e) => setNickname(e.target.value)}
                       placeholder="Enter nickname..."
                       maxLength={15}
-                      className="w-full px-2.5 py-1.5 bg-white/30 dark:bg-black/30 border border-gray-300 dark:border-gray-700 rounded-lg text-xs font-semibold text-gray-905 dark:text-white focus:outline-none focus:ring-1 focus:ring-green-505"
+                      className="w-full px-2.5 py-1.5 bg-white/30 dark:bg-black/30 border border-gray-300 dark:border-gray-700 rounded-lg text-xs font-semibold text-gray-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-green-505"
                     />
                   </div>
 

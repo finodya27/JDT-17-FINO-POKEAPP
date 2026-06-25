@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePokemonStore } from "../../store";
 import { capitalize, padId } from "../../lib/utils";
@@ -7,6 +7,7 @@ import { TYPE_COLORS } from "../../constant";
 import Button from "../../components/button";
 
 const MyPokemon = () => {
+  const navigate = useNavigate();
   const { myPokemon, releasePokemon, renamePokemon } = usePokemonStore();
   const [editingId, setEditingId] = useState(null);
   const [newNickname, setNewNickname] = useState("");
@@ -64,7 +65,7 @@ const MyPokemon = () => {
         </motion.div>
       ) : (
         // Grid: 2 Columns on mobile viewport
-        <div className="grid grid-cols-2 gap-3.5 mt-1.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-2">
           <AnimatePresence>
             {myPokemon.map((pokemon) => {
               const primaryType = pokemon.types?.[0] || "normal";
@@ -79,7 +80,12 @@ const MyPokemon = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.85, y: 10 }}
                   transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                  className="relative rounded-2xl solid-card p-3.5 flex flex-col justify-between overflow-hidden h-52 transition-theme"
+                  className="relative rounded-2xl solid-card p-3.5 flex flex-col justify-between overflow-hidden h-[215px] transition-theme cursor-pointer hover:shadow-md hover:border-red-500/25"
+                  onClick={() => {
+                    if (!isEditing) {
+                      navigate(`/pokemon/${pokemon.name}`, { state: { from: "bag", uniqueId: pokemon.uniqueId } });
+                    }
+                  }}
                 >
                   {/* Decorative background glow */}
                   <div
@@ -88,8 +94,8 @@ const MyPokemon = () => {
                   ></div>
 
                   {/* Header Row */}
-                  <div className="flex justify-between items-start mb-1 z-10">
-                    <div>
+                  <div className="flex justify-between items-start mb-1 z-10" onClick={(e) => isEditing && e.stopPropagation()}>
+                    <div className="w-full">
                       {isEditing ? (
                         <div className="flex flex-col gap-1 relative z-20">
                           <input
@@ -97,18 +103,18 @@ const MyPokemon = () => {
                             value={newNickname}
                             onChange={(e) => setNewNickname(e.target.value)}
                             maxLength={15}
-                            className="px-2 py-0.5 bg-white/40 dark:bg-black/40 border border-gray-300 dark:border-gray-700 rounded text-[10px] font-bold text-gray-905 dark:text-white focus:outline-none focus:ring-1 focus:ring-red-500 w-28"
+                            className="px-2 py-0.5 bg-white/40 dark:bg-black/40 border border-gray-300 dark:border-gray-700 rounded text-[10px] font-bold text-gray-905 dark:text-white focus:outline-none focus:ring-1 focus:ring-red-500 w-full"
                           />
                           <div className="flex gap-1.5 text-[9px] font-extrabold">
                             <button
-                              onClick={() => saveEdit(pokemon.uniqueId)}
+                              onClick={(e) => { e.stopPropagation(); saveEdit(pokemon.uniqueId); }}
                               className="text-green-500 hover:text-green-600 cursor-pointer bg-none border-none p-0"
                             >
                               Save
                             </button>
                             <span className="text-gray-450">|</span>
                             <button
-                              onClick={() => setEditingId(null)}
+                              onClick={(e) => { e.stopPropagation(); setEditingId(null); }}
                               className="text-gray-500 hover:text-gray-600 cursor-pointer bg-none border-none p-0"
                             >
                               Cancel
@@ -116,13 +122,16 @@ const MyPokemon = () => {
                           </div>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-1 group">
-                          <h3 className="m-0 text-xs font-extrabold tracking-wide text-gray-800 dark:text-gray-100 truncate max-w-28">
+                        <div className="flex items-center justify-between w-full group">
+                          <h3 className="m-0 text-xs font-extrabold tracking-wide text-gray-800 dark:text-gray-100 truncate pr-2">
                             {pokemon.nickname}
                           </h3>
                           <button
-                            onClick={() => startEdit(pokemon)}
-                            className="p-0.5 rounded text-gray-450 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer transition-colors"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              startEdit(pokemon);
+                            }}
+                            className="p-0.5 rounded text-gray-450 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer transition-colors shrink-0"
                             title="Edit Nickname"
                           >
                             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -131,7 +140,7 @@ const MyPokemon = () => {
                           </button>
                         </div>
                       )}
-                      <span className="text-[9px] font-bold text-gray-500 dark:text-gray-400 block mt-0.5 capitalize truncate max-w-28">
+                      <span className="text-[9px] font-bold text-gray-500 dark:text-gray-300 block mt-0.5 capitalize truncate">
                         {capitalize(pokemon.name)} • {padId(pokemon.id)}
                       </span>
                     </div>
@@ -152,14 +161,14 @@ const MyPokemon = () => {
 
                   {/* Captured Info and Badges */}
                   <div className="mt-1 space-y-1.5 z-10">
-                    <div className="flex justify-between items-center text-[8px] text-gray-500 dark:text-gray-400 font-extrabold border-b border-gray-250/20 dark:border-gray-800/20 pb-1">
+                    <div className="flex justify-between items-center text-[8px] text-gray-500 dark:text-gray-350 font-extrabold border-b border-gray-250/20 dark:border-gray-800/40 pb-1">
                       <span>Caught:</span>
-                      <span>{pokemon.dateCaught.split(", ")[0]}</span>
+                      <span className="text-gray-700 dark:text-gray-200">{pokemon.dateCaught.split(", ")[0]}</span>
                     </div>
 
                     <div className="flex justify-between items-center gap-1.5">
                       {/* Type badges */}
-                      <div className="flex gap-0.5">
+                      <div className="flex flex-wrap gap-0.5 max-w-[75%]">
                         {pokemon.types?.map((type) => {
                           const tStyle = TYPE_COLORS[type] || TYPE_COLORS.normal;
                           return (
@@ -171,18 +180,24 @@ const MyPokemon = () => {
                               }}
                               className="px-1.5 py-0.5 rounded-full text-[7px] font-extrabold uppercase tracking-wide shadow-sm"
                             >
-                              {type.slice(0, 4)}
+                              {type}
                             </span>
                           );
                         })}
                       </div>
 
-                      {/* Release button */}
+                      {/* Compact Release Trash Icon button */}
                       <button
-                        onClick={() => setConfirmReleaseId(pokemon.uniqueId)}
-                        className="px-2 py-0.5 border border-red-500/20 hover:border-red-500/60 hover:bg-red-500/10 text-red-500 rounded-lg text-[9px] font-extrabold cursor-pointer transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setConfirmReleaseId(pokemon.uniqueId);
+                        }}
+                        className="p-1 border border-red-500/20 hover:border-red-500/60 hover:bg-red-500/10 text-red-500 rounded-lg cursor-pointer transition-colors shrink-0 flex items-center justify-center"
+                        title="Release Pokémon"
                       >
-                        Release
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                       </button>
                     </div>
                   </div>
