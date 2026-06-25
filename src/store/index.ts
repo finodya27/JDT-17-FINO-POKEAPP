@@ -1,12 +1,23 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { CaughtPokemon, PokemonDetail } from "../types";
 
-export const usePokemonStore = create(
+export interface PokemonState {
+  myPokemon: CaughtPokemon[];
+  darkMode: boolean;
+  addPokemon: (pokemon: PokemonDetail, nickname: string) => void;
+  releasePokemon: (uniqueId: string) => void;
+  renamePokemon: (uniqueId: string, newNickname: string) => void;
+  toggleDarkMode: () => void;
+  setDarkMode: (val: boolean) => void;
+}
+
+export const usePokemonStore = create<PokemonState>()(
   persist(
     (set) => ({
       myPokemon: [],
       darkMode: false,
-      
+
       addPokemon: (pokemon, nickname) =>
         set((state) => ({
           myPokemon: [
@@ -20,7 +31,8 @@ export const usePokemonStore = create(
                 pokemon.sprites?.other?.showdown?.front_default ||
                 pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default ||
                 pokemon.sprites?.other?.["official-artwork"]?.front_default ||
-                pokemon.sprites?.front_default,
+                pokemon.sprites?.front_default ||
+                "",
               types: pokemon.types?.map((t) => t.type.name) || [],
               dateCaught: new Date().toLocaleDateString("en-US", {
                 month: "short",

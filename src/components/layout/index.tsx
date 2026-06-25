@@ -1,8 +1,8 @@
+import React, { useEffect } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import { usePokemonStore } from "../../store";
-import { useEffect } from "react";
 
-const Layout = () => {
+const Layout: React.FC = () => {
   const { darkMode, toggleDarkMode, myPokemon } = usePokemonStore();
 
   // On mount, make sure DOM matches store mode

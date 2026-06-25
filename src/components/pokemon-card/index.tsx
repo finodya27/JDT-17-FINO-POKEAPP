@@ -1,3 +1,4 @@
+import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -5,7 +6,11 @@ import { getPokemonDetail } from "../../service/Pokemon";
 import { capitalize, padId } from "../../lib/utils";
 import { TYPE_COLORS } from "../../constant";
 
-const PokemonCard = ({ name }) => {
+export interface PokemonCardProps {
+  name: string;
+}
+
+const PokemonCard: React.FC<PokemonCardProps> = ({ name }) => {
   const { data: pokemon, isLoading, error } = useQuery({
     queryKey: ["pokemon-card-detail", name],
     queryFn: () => getPokemonDetail(name),
@@ -43,7 +48,7 @@ const PokemonCard = ({ name }) => {
   const staticUrl =
     pokemon.sprites?.other?.["official-artwork"]?.front_default ||
     pokemon.sprites?.front_default;
-  const spriteUrl = animatedUrl || staticUrl;
+  const spriteUrl = animatedUrl || staticUrl || "";
 
   return (
     <Link to={`/pokemon/${pokemon.name}`} className="no-underline block group">

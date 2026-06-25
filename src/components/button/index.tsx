@@ -1,6 +1,11 @@
+import React from "react";
 import { cn } from "../../lib/utils";
 
-const Button = ({
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "primary" | "secondary" | "danger" | "success" | "glass";
+}
+
+const Button: React.FC<ButtonProps> = ({
   children,
   onClick,
   type = "button",

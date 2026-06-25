@@ -1,25 +1,26 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePokemonStore } from "../../store";
+import type { CaughtPokemon } from "../../types";
 import { capitalize, padId } from "../../lib/utils";
 import { TYPE_COLORS } from "../../constant";
 import Button from "../../components/button";
 
-const MyPokemon = () => {
+const MyPokemon: React.FC = () => {
   const navigate = useNavigate();
   const { myPokemon, releasePokemon, renamePokemon } = usePokemonStore();
-  const [editingId, setEditingId] = useState(null);
-  const [newNickname, setNewNickname] = useState("");
-  const [confirmReleaseId, setConfirmReleaseId] = useState(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [newNickname, setNewNickname] = useState<string>("");
+  const [confirmReleaseId, setConfirmReleaseId] = useState<string | null>(null);
 
   // Handle edit nickname triggers
-  const startEdit = (pokemon) => {
+  const startEdit = (pokemon: CaughtPokemon) => {
     setEditingId(pokemon.uniqueId);
     setNewNickname(pokemon.nickname);
   };
 
-  const saveEdit = (uniqueId) => {
+  const saveEdit = (uniqueId: string) => {
     if (newNickname.trim()) {
       renamePokemon(uniqueId, newNickname.trim());
       setEditingId(null);
@@ -112,7 +113,7 @@ const MyPokemon = () => {
                             >
                               Save
                             </button>
-                            <span className="text-gray-450">|</span>
+                            <span className="text-gray-455">|</span>
                             <button
                               onClick={(e) => { e.stopPropagation(); setEditingId(null); }}
                               className="text-gray-500 hover:text-gray-600 cursor-pointer bg-none border-none p-0"
@@ -140,7 +141,7 @@ const MyPokemon = () => {
                           </button>
                         </div>
                       )}
-                      <span className="text-[9px] font-bold text-gray-500 dark:text-gray-300 block mt-0.5 capitalize truncate">
+                      <span className="text-[9px] font-bold text-gray-500 dark:text-gray-350 block mt-0.5 capitalize truncate">
                         {capitalize(pokemon.name)} • {padId(pokemon.id)}
                       </span>
                     </div>
@@ -241,7 +242,9 @@ const MyPokemon = () => {
                   <Button
                     variant="danger"
                     onClick={() => {
-                      releasePokemon(confirmReleaseId);
+                      if (confirmReleaseId) {
+                        releasePokemon(confirmReleaseId);
+                      }
                       setConfirmReleaseId(null);
                     }}
                     className="px-4 py-1.5 rounded-lg text-[10px] shadow-md shadow-red-650/10"

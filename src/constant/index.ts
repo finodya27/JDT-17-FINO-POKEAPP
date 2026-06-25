@@ -1,6 +1,13 @@
 export const BASE_URL = "https://pokeapi.co/api/v2";
 
-export const TYPE_COLORS = {
+export interface TypeColorInfo {
+  bg: string;
+  border: string;
+  text: string;
+  hex: string;
+}
+
+export const TYPE_COLORS: Record<string, TypeColorInfo> = {
   normal: { bg: "bg-type-normal", border: "border-type-normal", text: "text-type-normal", hex: "#A8A77A" },
   fire: { bg: "bg-type-fire", border: "border-type-fire", text: "text-type-fire", hex: "#EE8130" },
   water: { bg: "bg-type-water", border: "border-type-water", text: "text-type-water", hex: "#6390F0" },

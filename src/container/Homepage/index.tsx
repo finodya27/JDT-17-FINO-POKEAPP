@@ -1,19 +1,25 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { getPokemonList, getPokemonsByType } from "../../service/Pokemon";
+import type { PokemonListItem } from "../../service/Pokemon/api";
 import SearchAndFilters from "../../components/search-filters";
 import PokemonCard from "../../components/pokemon-card";
 import Button from "../../components/button";
 
-const getPokemonIdFromUrl = (url) => {
+const getPokemonIdFromUrl = (url: string): number => {
   const parts = url.split("/").filter(Boolean);
   return parseInt(parts[parts.length - 1], 10);
 };
 
+interface PokemonGridProps {
+  processedPokemonList: PokemonListItem[];
+  isLoading: boolean;
+}
+
 // Keyed sub-component to manage pagination state and auto-reset when filters change
-const PokemonGrid = ({ processedPokemonList, isLoading }) => {
-  const [page, setPage] = useState(1);
+const PokemonGrid: React.FC<PokemonGridProps> = ({ processedPokemonList, isLoading }) => {
+  const [page, setPage] = useState<number>(1);
   const itemsPerPage = 20;
 
   const totalPages = Math.max(Math.ceil(processedPokemonList.length / itemsPerPage), 1);
@@ -103,10 +109,10 @@ const PokemonGrid = ({ processedPokemonList, isLoading }) => {
   );
 };
 
-const Homepage = () => {
-  const [search, setSearch] = useState("");
-  const [selectedType, setSelectedType] = useState("");
-  const [sortBy, setSortBy] = useState("id-asc");
+const Homepage: React.FC = () => {
+  const [search, setSearch] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<string>("");
+  const [sortBy, setSortBy] = useState<string>("id-asc");
 
   // Query 1: Fetch all mainline Pokémon (1025)
   const { data: allPokemonData, isLoading: isLoadingAll } = useQuery({

@@ -1,6 +1,16 @@
+import React from "react";
 import { TYPE_COLORS } from "../../constant";
 
-const SearchAndFilters = ({
+export interface SearchAndFiltersProps {
+  search: string;
+  setSearch: (val: string) => void;
+  selectedType: string;
+  setSelectedType: (val: string) => void;
+  sortBy: string;
+  setSortBy: (val: string) => void;
+}
+
+const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
   search,
   setSearch,
   selectedType,
