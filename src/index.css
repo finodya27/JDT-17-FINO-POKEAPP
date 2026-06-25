@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Press+Start+2P&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@theme {
+  --font-sans: "Outfit", sans-serif;
+  --font-pixel: "Press Start 2P", monospace;
+  
+  /* Glassmorphism settings */
+  --color-glass-bg: rgba(255, 255, 255, 0.45);
+  --color-glass-border: rgba(255, 255, 255, 0.25);
+  --color-glass-bg-dark: rgba(20, 20, 28, 0.55);
+  --color-glass-border-dark: rgba(255, 255, 255, 0.08);
+
+  /* Pokemon Type Palette */
+  --color-type-normal: #A8A77A;
+  --color-type-fire: #EE8130;
+  --color-type-water: #6390F0;
+  --color-type-electric: #F7D02C;
+  --color-type-grass: #7AC74C;
+  --color-type-ice: #96D9D6;
+  --color-type-fighting: #C22E28;
+  --color-type-poison: #A33EA1;
+  --color-type-ground: #E2BF65;
+  --color-type-flying: #A98FF3;
+  --color-type-psychic: #F95587;
+  --color-type-bug: #A6B91A;
+  --color-type-rock: #B6A136;
+  --color-type-ghost: #735797;
+  --color-type-dragon: #6F35FC;
+  --color-type-steel: #B7B7CE;
+  --color-type-fairy: #D685AD;
+  --color-type-dark: #705746;
+}
+
+/* Base custom resets */
+html, body {
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom animated gradient backgrounds */
+.bg-mesh-light {
+  background-color: #f3f4f6;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, hsla(253,16%,7%,0) 50%, hsla(210,100%,96%,1) 100%),
+    radial-gradient(at 50% 0%, hsla(225,39%,30%,0) 0, hsla(225,39%,30%,0) 50%, hsla(120,60%,95%,1) 100%),
+    radial-gradient(at 100% 0%, hsla(339,49%,30%,0) 0, hsla(339,49%,30%,0) 50%, hsla(330,100%,96%,1) 100%);
+  background-attachment: fixed;
+}
+
+.bg-mesh-dark {
+  background-color: #0b0c10;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(31, 38, 59, 0.3) 0, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.08) 0, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.1) 0, transparent 70%);
+  background-attachment: fixed;
+}
+
+/* Hide scrollbar defaults, make modern */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7);
+}
+
+/* Soft transitions */
+.transition-theme {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom glassmorphism helpers */
+.glass-panel {
+  background: var(--color-glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-glass-border);
+}
+
+.dark .glass-panel {
+  background: var(--color-glass-bg-dark);
+  border: 1px solid var(--color-glass-border-dark);
+}
+
+/* Solid card styles with high contrast */
+.solid-card {
+  background-color: #ffffff;
+  border: 1px solid rgba(229, 231, 235, 0.8); /* gray-200 */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+
+.dark .solid-card {
+  background-color: #1a1b23; /* Darker slate */
+  border: 1px solid rgba(75, 85, 99, 0.25); /* gray-600 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Pokeball catch animations */
+@keyframes shake {
+  0% { transform: translate(0, 0) rotate(0); }
+  20% { transform: translate(-8px, 0) rotate(-15deg); }
+  30% { transform: translate(6px, 0) rotate(15deg); }
+  50% { transform: translate(-4px, 0) rotate(-10deg); }
+  60% { transform: translate(3px, 0) rotate(10deg); }
+  100% { transform: translate(0, 0) rotate(0); }
+}
+
+.pokeball-shake {
+  animation: shake 1.2s cubic-bezier(.36,.07,.19,.97) infinite;
+  transform-origin: bottom center;
+}
+
+/* Stats animation progress track */
+@keyframes growWidth {
+  from { width: 0%; }
+}
+.stat-bar-fill {
+  animation: growWidth 1s ease-out forwards;
+}
