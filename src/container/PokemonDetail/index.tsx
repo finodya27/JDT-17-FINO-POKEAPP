@@ -13,7 +13,7 @@ import { TYPE_COLORS } from "../../constant";
 import Button from "../../components/button";
 import { usePokemonStore } from "../../store";
 
-// Helper to extract Pokemon ID from PokeAPI URL
+
 const getPokemonIdFromUrl = (url: string): number => {
   const parts = url.split("/").filter(Boolean);
   return parseInt(parts[parts.length - 1], 10);
@@ -24,7 +24,7 @@ interface EvolutionChainItem {
   id: number;
 }
 
-// Recursive helper to flatten evolution chain pathways
+
 const getEvolutionList = (chainNode: EvolutionNode | undefined | null): EvolutionChainItem[] => {
   if (!chainNode) return [];
   const list = [
@@ -52,26 +52,26 @@ const PokemonDetail: React.FC = () => {
   const isFromBag = (location.state as any)?.from === "bag";
   const targetUniqueId = (location.state as any)?.uniqueId;
 
-  // Search for the caught Pokémon instance by uniqueId or name
+  
   const caughtInstance = myPokemon.find((p) =>
     (targetUniqueId && p.uniqueId === targetUniqueId) ||
     (!targetUniqueId && p.name.toLowerCase() === name?.toLowerCase())
   );
 
-  // Catch gameplay states
+  
   const [catchState, setCatchState] = useState<"idle" | "throwing" | "success" | "fail">("idle");
   const [nickname, setNickname] = useState<string>("");
   const [showReleaseConfirm, setShowReleaseConfirm] = useState<boolean>(false);
 
-  // Query 1: Get standard detailed stats, types, weight, height, cries
+  
   const { data: pokemon, isLoading: isLoadingDetail, error: errorDetail } = useQuery({
     queryKey: ["pokemon-detail", name],
     queryFn: () => getPokemonDetail(name || ""),
     enabled: !!name,
-    staleTime: 15 * 60 * 1000 // 15 mins cache
+    staleTime: 15 * 60 * 1000 
   });
 
-  // Query 2: Get species data (flavor text description, egg groups, capture_rate, evolution_chain url)
+  
   const { data: species, isLoading: isLoadingSpecies } = useQuery({
     queryKey: ["pokemon-species", name],
     queryFn: () => getPokemonSpecies(name || ""),
@@ -79,7 +79,7 @@ const PokemonDetail: React.FC = () => {
     staleTime: 15 * 60 * 1000
   });
 
-  // Query 3: Get evolution chain hierarchy
+  
   const evolutionChainUrl = species?.evolution_chain?.url;
   const { data: evolutionData, isLoading: isLoadingEvolution } = useQuery({
     queryKey: ["pokemon-evolution", evolutionChainUrl],
@@ -121,11 +121,11 @@ const PokemonDetail: React.FC = () => {
     );
   }
 
-  // Formatting primary elements
+  
   const primaryType = pokemon.types?.[0]?.type?.name || "normal";
   const typeStyle = TYPE_COLORS[primaryType] || TYPE_COLORS.normal;
 
-  // Resolve animated sprites
+  
   const animatedFront =
     pokemon.sprites?.other?.showdown?.front_default ||
     pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default ||
@@ -137,20 +137,20 @@ const PokemonDetail: React.FC = () => {
     pokemon.sprites?.front_shiny ||
     "";
 
-  // Extract English Genus / Category
+  
   const categoryName = species?.genera?.find((g) => g.language.name === "en")?.genus || "Pokémon";
 
-  // Extract English flavor description
+  
   const descriptionText =
     species?.flavor_text_entries
       ?.find((entry) => entry.language.name === "en")
       ?.flavor_text.replace(/\f/g, " ")
       .replace(/\n/g, " ") || "No description available.";
 
-  // Fetch evolutions list
+  
   const evolutionList = evolutionData ? getEvolutionList(evolutionData.chain) : [];
 
-  // Plays cry sound
+  
   const handlePlayCry = () => {
     const cryUrl = pokemon.cries?.latest || pokemon.cries?.legacy;
     if (cryUrl) {
@@ -160,10 +160,10 @@ const PokemonDetail: React.FC = () => {
     }
   };
 
-  // Handles Gacha Catch RNG Mechanic (50% probability success)
+  
   const handleCatchPokemon = () => {
     setCatchState("throwing");
-    setNickname(capitalize(pokemon.name)); // Default nickname is species name
+    setNickname(capitalize(pokemon.name)); 
 
     setTimeout(() => {
       const success = Math.random() < 0.5;
@@ -172,7 +172,7 @@ const PokemonDetail: React.FC = () => {
       } else {
         setCatchState("fail");
       }
-    }, 1500); // 1.5s wiggling suspense
+    }, 1500); 
   };
 
   const handleSaveToBag = () => {
@@ -183,7 +183,7 @@ const PokemonDetail: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full relative">
-      {/* Back Button */}
+      
       <div className="self-start">
         <Link to={isFromBag ? "/my-pokemon" : "/"} className="no-underline">
           <Button variant="secondary" className="px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1.5">
@@ -195,19 +195,19 @@ const PokemonDetail: React.FC = () => {
         </Link>
       </div>
 
-      {/* Profile Card & Info */}
+      
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         className="rounded-2xl solid-card p-5 flex flex-col items-center relative overflow-hidden transition-theme"
       >
-        {/* Background glow disc */}
+        
         <div
           className="absolute -top-14 -right-14 w-28 h-28 rounded-full blur-2xl opacity-10 dark:opacity-15"
           style={{ backgroundColor: typeStyle.hex }}
         ></div>
 
-        {/* Title block */}
+        
         <div className="text-center w-full z-10">
           <span className="text-[10px] font-mono font-bold text-gray-500 dark:text-gray-400">
             {padId(pokemon.id)}
@@ -222,9 +222,9 @@ const PokemonDetail: React.FC = () => {
           </p>
         </div>
 
-        {/* Animated Showcase Layout (Normal & Shiny side by side) */}
+        
         <div className="flex justify-center items-center gap-6 my-4 w-full z-10">
-          {/* Normal Animated GIF */}
+          
           <div className="flex flex-col items-center gap-1">
             <div className="w-20 h-20 bg-black/5 dark:bg-white/5 border border-gray-400/10 dark:border-gray-800/10 rounded-2xl flex items-center justify-center p-2">
               <img src={animatedFront} alt={pokemon.name} className="w-14 h-14 object-contain" />
@@ -232,7 +232,7 @@ const PokemonDetail: React.FC = () => {
             <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 tracking-wider uppercase">Normal</span>
           </div>
 
-          {/* Shiny Animated GIF */}
+          
           <div className="flex flex-col items-center gap-1">
             <div className="w-20 h-20 bg-black/5 dark:bg-white/5 border border-gray-400/10 dark:border-gray-800/10 rounded-2xl flex items-center justify-center p-2">
               <img src={animatedShiny} alt={`${pokemon.name}-shiny`} className="w-14 h-14 object-contain" />
@@ -241,7 +241,7 @@ const PokemonDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Type badges - solid colored for high contrast */}
+        
         <div className="flex gap-1.5 mb-5 z-10">
           {pokemon.types?.map((t) => {
             const tName = t.type.name;
@@ -261,7 +261,7 @@ const PokemonDetail: React.FC = () => {
           })}
         </div>
 
-        {/* Action Row */}
+        
         <div className="flex gap-2.5 w-full z-10">
           <Button
             variant="secondary"
@@ -303,13 +303,13 @@ const PokemonDetail: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Description, Profile Info & Stats */}
+      
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl solid-card p-4.5 shadow-sm flex flex-col gap-4 transition-theme"
       >
-        {/* Description */}
+        
         <div className="space-y-1">
           <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-300">
             Description
@@ -319,7 +319,7 @@ const PokemonDetail: React.FC = () => {
           </p>
         </div>
 
-        {/* Profile Details */}
+        
         <div className="grid grid-cols-2 gap-3 border-t border-b border-gray-200/20 dark:border-gray-800/40 py-3">
           <div className="space-y-0.5">
             <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 uppercase tracking-wide">
@@ -347,7 +347,7 @@ const PokemonDetail: React.FC = () => {
           </div>
         </div>
 
-        {/* Base Stats */}
+        
         <div className="space-y-2">
           <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-300 mb-1">
             Base Stats
@@ -385,7 +385,7 @@ const PokemonDetail: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Evolution Chain Component */}
+      
       {evolutionList.length > 1 && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -440,7 +440,7 @@ const PokemonDetail: React.FC = () => {
         </motion.div>
       )}
 
-      {/* Catch System Gameplay Overlay Modal */}
+      
       <AnimatePresence>
         {catchState !== "idle" && (
           <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm rounded-[28px] md:rounded-[26px]">
@@ -450,7 +450,7 @@ const PokemonDetail: React.FC = () => {
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full max-w-xs solid-card rounded-2xl p-5 shadow-xl"
             >
-              {/* State 1: Ball Throwing Suspense */}
+              
               {catchState === "throwing" && (
                 <div className="text-center py-4 flex flex-col items-center gap-3">
                   <div className="w-12 h-12 relative flex items-center justify-center bg-white rounded-full border-4 border-gray-900 shadow-md pokeball-shake shadow-red-500/15">
@@ -470,7 +470,7 @@ const PokemonDetail: React.FC = () => {
                 </div>
               )}
 
-              {/* State 2: Catch Gacha Failure */}
+              
               {catchState === "fail" && (
                 <div className="text-center space-y-3 py-1">
                   <div className="text-3xl animate-bounce">😢</div>

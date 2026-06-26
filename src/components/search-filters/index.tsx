@@ -22,9 +22,9 @@ const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
 
   return (
     <div className="w-full glass-panel rounded-2xl p-4 border border-gray-200/40 dark:border-gray-800/40 shadow-sm flex flex-col gap-3">
-      {/* Search Input */}
+      
       <div className="relative w-full">
-        {/* Visually hidden label for screen readers */}
+        
         <label htmlFor="pokemon-search" className="sr-only">
           Search Pokémon by name or ID
         </label>
@@ -44,9 +44,9 @@ const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
         />
       </div>
 
-      {/* Select Type and Sort Dropdowns side-by-side */}
+      
       <div className="flex gap-2.5 w-full">
-        {/* Select Type */}
+        
         <div className="flex-1">
           <label htmlFor="type-select" className="sr-only">
             Filter by Pokémon type
@@ -77,7 +77,7 @@ const SearchAndFilters: React.FC<SearchAndFiltersProps> = ({
           </select>
         </div>
 
-        {/* Sort By */}
+        
         <div className="flex-1">
           <label htmlFor="sort-select" className="sr-only">
             Sort Pokémon list

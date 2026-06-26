@@ -32,7 +32,7 @@ export const getPokemonSpecies = async (nameOrId: string | number): Promise<Poke
 };
 
 export const getEvolutionChain = async (url: string): Promise<EvolutionChain> => {
-  // Evolution chain URLs are dynamic and fully populated in species details, so we query it directly
+  
   return API.get<EvolutionChain>(url, true);
 };
 

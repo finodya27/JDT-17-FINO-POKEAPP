@@ -6,18 +6,18 @@ import { router } from "./routes";
 import { usePokemonStore } from "./store";
 import "./index.css";
 
-// Create Query Client for TanStack React Query
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       retry: 1,
-      staleTime: 5 * 60 * 1000 // 5 minutes caching
+      staleTime: 5 * 60 * 1000 
     }
   }
 });
 
-// Initialize Dark Mode class on the html element from the persisted store
+
 const isDark = usePokemonStore.getState().darkMode;
 if (isDark) {
   document.documentElement.classList.add("dark");

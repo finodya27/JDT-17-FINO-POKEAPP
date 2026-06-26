@@ -4,7 +4,7 @@ export function cn(...classes: (string | undefined | null | boolean)[]): string 
 
 export function capitalize(str: string | undefined | null): string {
   if (!str) return "";
-  // Split by dash (e.g., mime-jr -> Mime Jr.)
+  
   return str
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

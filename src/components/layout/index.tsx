@@ -5,7 +5,7 @@ import { usePokemonStore } from "../../store";
 const Layout: React.FC = () => {
   const { darkMode, toggleDarkMode, myPokemon } = usePokemonStore();
 
-  // On mount, make sure DOM matches store mode
+  
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -20,12 +20,9 @@ const Layout: React.FC = () => {
         darkMode ? "bg-mesh-dark" : "bg-mesh-light"
       } transition-theme`}
     >
-      {/* Mobile Smartphone Frame Container */}
       <div className="w-full max-w-[450px] min-h-screen flex flex-col bg-white dark:bg-[#0b0c10] shadow-[0_0_50px_rgba(0,0,0,0.15)] md:border-x border-gray-200/20 dark:border-gray-800/20 pb-20 transition-theme relative">
-        {/* Top Header Navigation */}
         <header className="sticky top-0 z-40 w-full glass-panel shadow-sm border-b border-gray-200/15 dark:border-gray-800/15">
           <div className="px-4 py-3 flex justify-between items-center">
-            {/* Logo */}
             <NavLink to="/" className="flex items-center gap-2 select-none group no-underline">
               <div className="relative w-7 h-7 flex items-center justify-center bg-red-500 rounded-full border-2 border-gray-900 shadow group-hover:rotate-12 transition-transform duration-300">
                 <div className="absolute top-0 left-0 w-full h-[40%] bg-red-500 rounded-t-full"></div>
@@ -34,11 +31,10 @@ const Layout: React.FC = () => {
                 <div className="absolute w-1.5 h-1.5 bg-white border border-gray-900 rounded-full z-20"></div>
               </div>
               <span className="font-sans font-extrabold text-base tracking-wider text-red-500 dark:text-red-400 group-hover:text-red-655 transition-colors">
-                POKÉ<span className="text-gray-900 dark:text-white font-light">APP</span>
+                POKÉ<span className="text-gray-900 dark:text-white font-light">APPFIN</span>
               </span>
             </NavLink>
 
-            {/* Theme Toggle Button */}
             <button
               onClick={toggleDarkMode}
               className="p-1.5 rounded-full border border-gray-300/40 dark:border-gray-700/40 hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer transition-colors"
@@ -57,12 +53,10 @@ const Layout: React.FC = () => {
           </div>
         </header>
 
-        {/* Main Content Area */}
         <main className="flex-1 w-full px-4 pt-5 pb-6 overflow-x-hidden">
           <Outlet />
         </main>
 
-        {/* Sticky Bottom Navigation Bar aligned with mobile container */}
         <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 z-40 w-full max-w-[450px] glass-panel shadow-[0_-4px_16px_rgba(0,0,0,0.04)] dark:shadow-[0_-4px_24px_rgba(0,0,0,0.15)] border-t border-gray-200/35 dark:border-gray-800/35 flex justify-around items-center py-2.5 px-6 transition-theme">
           <NavLink
             to="/"

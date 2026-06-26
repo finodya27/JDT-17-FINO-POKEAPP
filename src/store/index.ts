@@ -79,7 +79,7 @@ export const usePokemonStore = create<PokemonState>()(
         })
     }),
     {
-      name: "pokemon-storage" // key in localStorage
+      name: "pokemon-storage" 
     }
   )
 );

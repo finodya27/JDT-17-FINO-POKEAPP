@@ -7,12 +7,12 @@ import SearchAndFilters from "../../components/search-filters";
 import PokemonCard from "../../components/pokemon-card";
 import Button from "../../components/button";
 
-// ------------------------------------------------------------------
-// PERFORMANCE: Server-side pagination constants
-// Instead of loading all 1025 at once, we fetch pages of PAGE_SIZE.
-// When the user searches or filters by type, we switch to a full
-// dataset fetch once (type queries return all matching Pokémon).
-// ------------------------------------------------------------------
+
+
+
+
+
+
 const PAGE_SIZE = 20;
 const TOTAL_POKEMON = 1025;
 const TOTAL_PAGES = Math.ceil(TOTAL_POKEMON / PAGE_SIZE);
@@ -22,7 +22,7 @@ const getPokemonIdFromUrl = (url: string): number => {
   return parseInt(parts[parts.length - 1], 10);
 };
 
-// ---------------------- Skeleton Loader ----------------------
+
 const SkeletonGrid = () => (
   <div className="grid grid-cols-2 gap-4 mt-3" aria-label="Loading Pokémon..." role="status">
     {Array.from({ length: 8 }).map((_, index) => (
@@ -39,7 +39,7 @@ const SkeletonGrid = () => (
   </div>
 );
 
-// ---------------------- Pagination Controls ----------------------
+
 interface PaginationProps {
   page: number;
   totalPages: number;
@@ -84,7 +84,7 @@ const Pagination: React.FC<PaginationProps> = ({ page, totalPages, onPrev, onNex
   );
 };
 
-// ---------------------- Pokemon Grid ----------------------
+
 interface PokemonGridProps {
   pokemonList: PokemonListItem[];
   isLoading: boolean;
@@ -136,31 +136,31 @@ const PokemonGrid: React.FC<PokemonGridProps> = ({
   );
 };
 
-// ---------------------- Homepage ----------------------
+
 const Homepage: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("id-asc");
 
-  // Server-side paginated browsing (no search/filter active)
+  
   const [browsePage, setBrowsePage] = useState<number>(1);
   const browseOffset = (browsePage - 1) * PAGE_SIZE;
 
-  // ------------------------------------------------------------------
-  // Query 1: Paginated browsing — only fetches PAGE_SIZE at a time.
-  // This eliminates the 16,000ms TBT from loading 1025 Pokémon upfront.
-  // ------------------------------------------------------------------
+  
+  
+  
+  
   const { data: pagedData, isLoading: isLoadingPaged } = useQuery({
     queryKey: ["pokemon-list-paged", browsePage],
     queryFn: () => getPokemonList(PAGE_SIZE, browseOffset),
     enabled: selectedType === "" && search === "",
-    staleTime: 60 * 60 * 1000, // Cache for 1 hour
+    staleTime: 60 * 60 * 1000, 
   });
 
-  // ------------------------------------------------------------------
-  // Query 2: When filtering by type, fetch all Pokémon of that type.
-  // Type queries are already bounded (e.g. fire has ~64 Pokémon).
-  // ------------------------------------------------------------------
+  
+  
+  
+  
   const { data: typePokemonData, isLoading: isLoadingType } = useQuery({
     queryKey: ["pokemon-list-type", selectedType],
     queryFn: () => getPokemonsByType(selectedType),
@@ -168,10 +168,10 @@ const Homepage: React.FC = () => {
     staleTime: 60 * 60 * 1000,
   });
 
-  // ------------------------------------------------------------------
-  // Query 3: When searching, load the full list to search across all IDs/names.
-  // We only trigger this when the user types something.
-  // ------------------------------------------------------------------
+  
+  
+  
+  
   const { data: allPokemonData, isLoading: isLoadingAll } = useQuery({
     queryKey: ["pokemon-list-all"],
     queryFn: () => getPokemonList(TOTAL_POKEMON, 0),
@@ -185,11 +185,11 @@ const Homepage: React.FC = () => {
     ? isLoadingType
     : isLoadingPaged;
 
-  // ------------------------------------------------------------------
-  // Filtered + sorted list (only used when search/type filter is active)
-  // ------------------------------------------------------------------
+  
+  
+  
   const filteredList = useMemo((): PokemonListItem[] => {
-    // Browsing mode — return raw paged results (no filtering)
+    
     if (search === "" && selectedType === "") return [];
 
     const rawList: PokemonListItem[] =
@@ -216,12 +216,12 @@ const Homepage: React.FC = () => {
     });
   }, [allPokemonData, typePokemonData, selectedType, search, sortBy]);
 
-  // Pagination for filtered results (client-side)
+  
   const [filterPage, setFilterPage] = useState<number>(1);
   const filterTotalPages = Math.max(Math.ceil(filteredList.length / PAGE_SIZE), 1);
   const visibleFiltered = filteredList.slice((filterPage - 1) * PAGE_SIZE, filterPage * PAGE_SIZE);
 
-  // Reset filter page when filters change
+  
   const handleSetSearch = (val: string) => { setSearch(val); setFilterPage(1); };
   const handleSetType = (val: string) => { setSelectedType(val); setFilterPage(1); setBrowsePage(1); };
   const handleSetSort = (val: string) => { setSortBy(val); setFilterPage(1); };
@@ -230,7 +230,7 @@ const Homepage: React.FC = () => {
   const handleFilterPrev = () => setFilterPage((p) => Math.max(1, p - 1));
   const handleFilterNext = () => setFilterPage((p) => Math.min(filterTotalPages, p + 1));
 
-  // Determine what to show
+  
   const isFiltering = search !== "" || selectedType !== "";
   const displayList = isFiltering ? visibleFiltered : (pagedData?.results ?? []);
   const displayPage = isFiltering ? filterPage : browsePage;
@@ -240,7 +240,7 @@ const Homepage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full min-h-[70vh]">
-      {/* Title banner */}
+      
       <div className="text-center space-y-1 py-1">
         <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white m-0">
           Pokémon Database
@@ -250,7 +250,7 @@ const Homepage: React.FC = () => {
         </p>
       </div>
 
-      {/* Filter and Search Bar */}
+      
       <SearchAndFilters
         search={search}
         setSearch={handleSetSearch}
@@ -260,7 +260,7 @@ const Homepage: React.FC = () => {
         setSortBy={handleSetSort}
       />
 
-      {/* Pokémon Grid */}
+      
       <PokemonGrid
         key={`${search}-${selectedType}-${sortBy}-${displayPage}`}
         pokemonList={displayList}

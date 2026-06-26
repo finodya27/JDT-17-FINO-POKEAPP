@@ -14,7 +14,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name }) => {
   const { data: pokemon, isLoading, error } = useQuery({
     queryKey: ["pokemon-card-detail", name],
     queryFn: () => getPokemonDetail(name),
-    staleTime: 15 * 60 * 1000 // 15 minutes cache
+    staleTime: 15 * 60 * 1000 
   });
 
   if (isLoading) {
@@ -41,7 +41,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name }) => {
   const primaryType = pokemon.types?.[0]?.type?.name || "normal";
   const typeStyle = TYPE_COLORS[primaryType] || TYPE_COLORS.normal;
 
-  // Resolve sprite URL
+  
   const animatedUrl =
     pokemon.sprites?.other?.showdown?.front_default ||
     pokemon.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default;
@@ -59,13 +59,13 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name }) => {
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
         className="relative h-44 rounded-2xl solid-card flex flex-col justify-between p-3.5 overflow-hidden transition-theme"
       >
-        {/* Soft solid type indicator disc in background */}
+        
         <div
           className="absolute -top-10 -right-10 w-20 h-20 rounded-full opacity-10 dark:opacity-15 group-hover:opacity-25 transition-opacity duration-300"
           style={{ backgroundColor: typeStyle.hex }}
         ></div>
 
-        {/* Top Header Row (Name & ID) */}
+        
         <div className="flex justify-between items-start z-10">
           <div>
             <h3 className="m-0 text-xs font-extrabold tracking-wide text-gray-800 dark:text-gray-100 transition-colors duration-200 group-hover:text-red-500 dark:group-hover:text-red-400">
@@ -77,7 +77,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name }) => {
           </div>
         </div>
 
-        {/* Center Artwork Image - GIF or fallback */}
+        
         <div className="relative w-20 h-20 self-center flex items-center justify-center z-10">
           <div
             style={{ backgroundColor: `${typeStyle.hex}10` }}
@@ -91,7 +91,7 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name }) => {
           />
         </div>
 
-        {/* Bottom Type Badges - solid colors with white text for maximum readability */}
+        
         <div className="flex flex-wrap gap-1 z-10">
           {pokemon.types?.map((t) => {
             const tName = t.type.name;

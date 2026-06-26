@@ -14,7 +14,7 @@ const MyPokemon: React.FC = () => {
   const [newNickname, setNewNickname] = useState<string>("");
   const [confirmReleaseId, setConfirmReleaseId] = useState<string | null>(null);
 
-  // Handle edit nickname triggers
+  
   const startEdit = (pokemon: CaughtPokemon) => {
     setEditingId(pokemon.uniqueId);
     setNewNickname(pokemon.nickname);
@@ -29,7 +29,7 @@ const MyPokemon: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full min-h-[70vh]">
-      {/* Page Header */}
+      
       <div className="text-center space-y-1 py-1">
         <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white m-0">
           My Pokémon Bag
@@ -39,7 +39,7 @@ const MyPokemon: React.FC = () => {
         </p>
       </div>
 
-      {/* Captured Grid List */}
+      
       {myPokemon.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

@@ -2,12 +2,12 @@ import React, { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./components/layout";
 
-// Lazy-load page components — each gets its own JS chunk
+
 const Homepage = lazy(() => import("./container/Homepage"));
 const PokemonDetail = lazy(() => import("./container/PokemonDetail"));
 const MyPokemon = lazy(() => import("./container/MyPokemon"));
 
-// Minimal inline spinner shown while lazy chunks load
+
 const PageSuspense = ({ children }: { children: React.ReactNode }) => (
   <Suspense
     fallback={
