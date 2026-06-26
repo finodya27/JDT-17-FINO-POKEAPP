@@ -4,10 +4,101 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PokéApp - Pokedex & Collection</title>
+    <title>PokéApp - Pokedex &amp; Collection</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="PokéApp is an interactive Pokédex and collection app. Explore all 1025 Pokémon, view stats, animated sprites, and catch your favorites to build your personal Bag collection." />
+    <meta name="keywords" content="pokedex, pokemon, pokeball, catch pokemon, pokemon stats, pokemon sprites" />
+    <meta name="author" content="PokéApp" />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#ef4444" />
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="PokéApp - Pokédex &amp; Collection" />
+    <meta property="og:description" content="Explore all 1025 Pokémon, view animated sprites and stats, then catch your favorites into your personal Bag." />
+    <meta property="og:image" content="/favicon.svg" />
+
+    <!-- Performance: Preconnect to external origins -->
+    <link rel="preconnect" href="https://pokeapi.co" crossorigin />
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin />
+    <link rel="dns-prefetch" href="https://pokeapi.co" />
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
+
+    <!-- Inline critical CSS for loading spinner (prevents blank flash) -->
+    <style>
+      #app-loading {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        z-index: 9999;
+        transition: opacity 0.3s ease;
+      }
+      .dark #app-loading { background: #0b0c10; }
+      #app-loading.hidden { opacity: 0; pointer-events: none; }
+      .pokeball-loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(#ef4444 50%, #ffffff 50%);
+        border: 3px solid #111827;
+        position: relative;
+        animation: spin 0.8s linear infinite;
+        box-shadow: 0 4px 12px rgba(239,68,68,0.3);
+      }
+      .pokeball-loader::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: #111827;
+        transform: translateY(-50%);
+      }
+      .pokeball-loader::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        background: #ffffff;
+        border: 3px solid #111827;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
   </head>
   <body>
+    <!-- Inline loading indicator — shown before React mounts -->
+    <div id="app-loading" aria-label="Loading PokéApp" role="status">
+      <div class="pokeball-loader"></div>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Hide the loader once React mounts -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var observer = new MutationObserver(function() {
+          var root = document.getElementById('root');
+          if (root && root.children.length > 0) {
+            var loader = document.getElementById('app-loading');
+            if (loader) {
+              loader.classList.add('hidden');
+              setTimeout(function() { loader.remove(); }, 300);
+            }
+            observer.disconnect();
+          }
+        });
+        observer.observe(document.getElementById('root'), { childList: true });
+      });
+    </script>
   </body>
 </html>

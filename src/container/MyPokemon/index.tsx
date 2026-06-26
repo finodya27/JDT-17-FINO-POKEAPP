@@ -48,9 +48,9 @@ const MyPokemon: React.FC = () => {
         >
           <div className="text-4xl animate-bounce">🎒</div>
           <div>
-            <h3 className="m-0 text-sm font-bold text-gray-800 dark:text-white mb-1.5">
+            <h2 className="m-0 text-sm font-bold text-gray-800 dark:text-white mb-1.5">
               Your Bag is Empty
-            </h3>
+            </h2>
             <p className="text-[11px] text-gray-500 dark:text-gray-400 max-w-xs mx-auto m-0 leading-relaxed">
               You haven't caught any Pokémon yet! Go back to the Pokedex to search for wild Pokémon and try your catch luck.
             </p>
@@ -221,9 +221,9 @@ const MyPokemon: React.FC = () => {
             >
               <div className="text-center space-y-3.5">
                 <div className="text-3xl">🕊️</div>
-                <h3 className="m-0 text-sm font-extrabold text-gray-800 dark:text-gray-100">
+                <h2 className="m-0 text-sm font-extrabold text-gray-800 dark:text-gray-100">
                   Release Pokémon?
-                </h3>
+                </h2>
                 <p className="text-[11px] text-gray-500 dark:text-gray-400 m-0 leading-relaxed">
                   Are you sure you want to release{" "}
                   <strong className="text-gray-800 dark:text-gray-200">

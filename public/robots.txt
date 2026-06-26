@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jdt-17-fino-pokeapp.vercel.app/sitemap.xml

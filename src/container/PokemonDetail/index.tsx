@@ -311,9 +311,9 @@ const PokemonDetail: React.FC = () => {
       >
         {/* Description */}
         <div className="space-y-1">
-          <h3 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-300">
+          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-300">
             Description
-          </h3>
+          </h2>
           <p className="text-xs text-gray-655 dark:text-gray-300 leading-relaxed m-0">
             {descriptionText}
           </p>
@@ -349,9 +349,9 @@ const PokemonDetail: React.FC = () => {
 
         {/* Base Stats */}
         <div className="space-y-2">
-          <h3 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-300 mb-1">
+          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-300 mb-1">
             Base Stats
-          </h3>
+          </h2>
           <div className="space-y-2">
             {pokemon.stats?.map((stat) => {
               const statLabel = stat.stat.name
@@ -392,9 +392,9 @@ const PokemonDetail: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="rounded-2xl solid-card p-4.5 shadow-sm flex flex-col gap-3 transition-theme"
         >
-          <h3 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-400">
+          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-400">
             Evolution Chain
-          </h3>
+          </h2>
           <div className="flex flex-wrap items-center justify-center gap-3 py-1">
             {evolutionList.map((evol, idx) => {
               const evolSprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${evol.id}.gif`;
