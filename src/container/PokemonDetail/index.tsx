@@ -47,7 +47,7 @@ const PokemonDetail: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const { addPokemon, myPokemon } = usePokemonStore();
+  const { addPokemon, myPokemon, releasePokemon } = usePokemonStore();
 
   const isFromBag = (location.state as any)?.from === "bag";
   const targetUniqueId = (location.state as any)?.uniqueId;
@@ -61,6 +61,7 @@ const PokemonDetail: React.FC = () => {
   // Catch gameplay states
   const [catchState, setCatchState] = useState<"idle" | "throwing" | "success" | "fail">("idle");
   const [nickname, setNickname] = useState<string>("");
+  const [showReleaseConfirm, setShowReleaseConfirm] = useState<boolean>(false);
 
   // Query 1: Get standard detailed stats, types, weight, height, cries
   const { data: pokemon, isLoading: isLoadingDetail, error: errorDetail } = useQuery({
@@ -273,19 +274,32 @@ const PokemonDetail: React.FC = () => {
             <span>Sound</span>
           </Button>
 
-          <Button
-            variant="primary"
-            onClick={handleCatchPokemon}
-            className="flex-2 py-2 rounded-xl text-xs shadow-md shadow-red-500/15"
-          >
-            <div className="w-3.5 h-3.5 relative flex items-center justify-center bg-white rounded-full border border-gray-900">
-              <div className="absolute top-0 left-0 w-full h-[40%] bg-red-500 rounded-t-full"></div>
-              <div className="absolute bottom-0 left-0 w-full h-[40%] bg-white rounded-b-full"></div>
-              <div className="w-full h-0.5 bg-gray-900 z-10"></div>
-              <div className="w-1 h-1 bg-white border border-gray-900 rounded-full z-20"></div>
-            </div>
-            <span>Catch!</span>
-          </Button>
+          {isFromBag ? (
+            <Button
+              variant="danger"
+              onClick={() => setShowReleaseConfirm(true)}
+              className="flex-2 py-2 rounded-xl text-xs shadow-md shadow-red-650/15"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              <span>Release</span>
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              onClick={handleCatchPokemon}
+              className="flex-2 py-2 rounded-xl text-xs shadow-md shadow-red-500/15"
+            >
+              <div className="w-3.5 h-3.5 relative flex items-center justify-center bg-white rounded-full border border-gray-900">
+                <div className="absolute top-0 left-0 w-full h-[40%] bg-red-500 rounded-t-full"></div>
+                <div className="absolute bottom-0 left-0 w-full h-[40%] bg-white rounded-b-full"></div>
+                <div className="w-full h-0.5 bg-gray-900 z-10"></div>
+                <div className="w-1 h-1 bg-white border border-gray-900 rounded-full z-20"></div>
+              </div>
+              <span>Catch!</span>
+            </Button>
+          )}
         </div>
       </motion.div>
 
@@ -511,6 +525,56 @@ const PokemonDetail: React.FC = () => {
                   </div>
                 </div>
               )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Release Confirmation Dialog Overlay */}
+      <AnimatePresence>
+        {showReleaseConfirm && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm rounded-[28px] md:rounded-[26px]">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-xs solid-card rounded-2xl p-5 shadow-xl"
+            >
+              <div className="text-center space-y-3.5">
+                <div className="text-3xl">🕊️</div>
+                <h3 className="m-0 text-sm font-extrabold text-gray-800 dark:text-gray-100">
+                  Release Pokémon?
+                </h3>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400 m-0 leading-relaxed">
+                  Are you sure you want to release{" "}
+                  <strong className="text-gray-800 dark:text-gray-200">
+                    {caughtInstance?.nickname || capitalize(pokemon.name)}
+                  </strong>{" "}
+                  back into the wild? This action cannot be undone.
+                </p>
+                <div className="flex gap-2.5 justify-center pt-1.5 text-xs font-bold">
+                  <Button
+                    variant="secondary"
+                    onClick={() => setShowReleaseConfirm(false)}
+                    className="px-4 py-1.5 rounded-lg text-[10px]"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      if (caughtInstance) {
+                        releasePokemon(caughtInstance.uniqueId);
+                      }
+                      setShowReleaseConfirm(false);
+                      navigate("/my-pokemon");
+                    }}
+                    className="px-4 py-1.5 rounded-lg text-[10px] shadow-md shadow-red-650/10"
+                  >
+                    Yes, Release
+                  </Button>
+                </div>
+              </div>
             </motion.div>
           </div>
         )}
