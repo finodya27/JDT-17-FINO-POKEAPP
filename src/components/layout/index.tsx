@@ -21,9 +21,9 @@ const Layout: React.FC = () => {
       } transition-theme`}
     >
       {/* Mobile Smartphone Frame Container */}
-      <div className="w-full max-w-[450px] min-h-screen flex flex-col bg-white dark:bg-[#0b0c10] shadow-[0_0_50px_rgba(0,0,0,0.15)] md:border-x border-gray-250/20 dark:border-gray-800/20 pb-20 transition-theme relative">
+      <div className="w-full max-w-[450px] min-h-screen flex flex-col bg-white dark:bg-[#0b0c10] shadow-[0_0_50px_rgba(0,0,0,0.15)] md:border-x border-gray-200/20 dark:border-gray-800/20 pb-20 transition-theme relative">
         {/* Top Header Navigation */}
-        <header className="sticky top-0 z-40 w-full glass-panel shadow-sm border-b border-gray-250/15 dark:border-gray-850/15">
+        <header className="sticky top-0 z-40 w-full glass-panel shadow-sm border-b border-gray-200/15 dark:border-gray-800/15">
           <div className="px-4 py-3 flex justify-between items-center">
             {/* Logo */}
             <NavLink to="/" className="flex items-center gap-2 select-none group no-underline">
@@ -69,21 +69,21 @@ const Layout: React.FC = () => {
             end
             className={({ isActive }) =>
               `flex flex-col items-center gap-0.5 no-underline transition-colors duration-200 select-none ${
-                isActive ? "text-red-500" : "text-gray-450 dark:text-gray-400 hover:text-red-400"
+                isActive ? "text-red-500" : "text-gray-600 dark:text-gray-300 hover:text-red-400"
               }`
             }
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
             </svg>
-            <span className="text-[9px] font-extrabold tracking-wide uppercase">Pokedex</span>
+            <span className="text-[9px] font-extrabold tracking-wide uppercase">Home</span>
           </NavLink>
 
           <NavLink
             to="/my-pokemon"
             className={({ isActive }) =>
               `flex flex-col items-center gap-0.5 no-underline transition-colors duration-200 select-none relative ${
-                isActive ? "text-red-500" : "text-gray-450 dark:text-gray-400 hover:text-red-400"
+                isActive ? "text-red-500" : "text-gray-600 dark:text-gray-300 hover:text-red-400"
               }`
             }
           >

@@ -115,7 +115,7 @@ const PokemonDetail: React.FC = () => {
           Internet connection issues or invalid Pokémon data.
         </p>
         <Link to="/" className="no-underline">
-          <Button variant="secondary" className="px-4 py-2 text-xs">Back to Pokedex</Button>
+          <Button variant="secondary" className="px-4 py-2 text-xs">Back to Home</Button>
         </Link>
       </div>
     );
@@ -190,7 +190,7 @@ const PokemonDetail: React.FC = () => {
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
-            <span>{isFromBag ? "Back to Bag" : "Back to Pokedex"}</span>
+            <span>{isFromBag ? "Back to Bag" : "Back to Home"}</span>
           </Button>
         </Link>
       </div>
@@ -212,10 +212,10 @@ const PokemonDetail: React.FC = () => {
           <span className="text-[10px] font-mono font-bold text-gray-500 dark:text-gray-400">
             {padId(pokemon.id)}
           </span>
-          <h2 className="m-0 mt-0.5 text-xl font-extrabold tracking-wide text-gray-800 dark:text-gray-100">
+          <h1 className="m-0 mt-0.5 text-xl font-extrabold tracking-wide text-gray-800 dark:text-gray-100">
             {caughtInstance ? caughtInstance.nickname : capitalize(pokemon.name)}
-          </h2>
-          <p className="text-[9px] font-extrabold text-gray-550 dark:text-gray-400 mt-0.5 tracking-wider uppercase">
+          </h1>
+          <p className="text-[9px] font-extrabold text-gray-500 dark:text-gray-400 mt-0.5 tracking-wider uppercase">
             {caughtInstance && caughtInstance.nickname.toLowerCase() !== pokemon.name.toLowerCase()
               ? `${capitalize(pokemon.name)} • ${categoryName}`
               : categoryName}
@@ -229,7 +229,7 @@ const PokemonDetail: React.FC = () => {
             <div className="w-20 h-20 bg-black/5 dark:bg-white/5 border border-gray-400/10 dark:border-gray-800/10 rounded-2xl flex items-center justify-center p-2">
               <img src={animatedFront} alt={pokemon.name} className="w-14 h-14 object-contain" />
             </div>
-            <span className="text-[9px] font-extrabold text-gray-550 dark:text-gray-300 tracking-wider uppercase">Normal</span>
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 tracking-wider uppercase">Normal</span>
           </div>
 
           {/* Shiny Animated GIF */}
@@ -237,7 +237,7 @@ const PokemonDetail: React.FC = () => {
             <div className="w-20 h-20 bg-black/5 dark:bg-white/5 border border-gray-400/10 dark:border-gray-800/10 rounded-2xl flex items-center justify-center p-2">
               <img src={animatedShiny} alt={`${pokemon.name}-shiny`} className="w-14 h-14 object-contain" />
             </div>
-            <span className="text-[9px] font-extrabold text-gray-555 dark:text-gray-300 tracking-wider uppercase">Shiny</span>
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 tracking-wider uppercase">Shiny</span>
           </div>
         </div>
 
@@ -311,18 +311,18 @@ const PokemonDetail: React.FC = () => {
       >
         {/* Description */}
         <div className="space-y-1">
-          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-300">
+          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-300">
             Description
           </h2>
-          <p className="text-xs text-gray-655 dark:text-gray-300 leading-relaxed m-0">
+          <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed m-0">
             {descriptionText}
           </p>
         </div>
 
         {/* Profile Details */}
-        <div className="grid grid-cols-2 gap-3 border-t border-b border-gray-250/20 dark:border-gray-800/40 py-3">
+        <div className="grid grid-cols-2 gap-3 border-t border-b border-gray-200/20 dark:border-gray-800/40 py-3">
           <div className="space-y-0.5">
-            <span className="text-[9px] font-extrabold text-gray-550 dark:text-gray-300 uppercase tracking-wide">
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 uppercase tracking-wide">
               Height
             </span>
             <p className="m-0 text-xs font-bold text-gray-800 dark:text-white">
@@ -330,7 +330,7 @@ const PokemonDetail: React.FC = () => {
             </p>
           </div>
           <div className="space-y-0.5">
-            <span className="text-[9px] font-extrabold text-gray-555 dark:text-gray-300 uppercase tracking-wide">
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 uppercase tracking-wide">
               Weight
             </span>
             <p className="m-0 text-xs font-bold text-gray-800 dark:text-white">
@@ -338,7 +338,7 @@ const PokemonDetail: React.FC = () => {
             </p>
           </div>
           <div className="col-span-2 space-y-0.5">
-            <span className="text-[9px] font-extrabold text-gray-555 dark:text-gray-300 uppercase tracking-wide">
+            <span className="text-[9px] font-extrabold text-gray-500 dark:text-gray-300 uppercase tracking-wide">
               Abilities
             </span>
             <p className="m-0 text-xs font-bold text-gray-800 dark:text-white capitalize">
@@ -349,7 +349,7 @@ const PokemonDetail: React.FC = () => {
 
         {/* Base Stats */}
         <div className="space-y-2">
-          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-300 mb-1">
+          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-300 mb-1">
             Base Stats
           </h2>
           <div className="space-y-2">
@@ -363,7 +363,7 @@ const PokemonDetail: React.FC = () => {
 
               return (
                 <div key={stat.stat.name} className="flex items-center text-[10px] font-bold">
-                  <span className="w-16 text-gray-555 dark:text-gray-300 text-[9px] uppercase tracking-wide">
+                  <span className="w-16 text-gray-500 dark:text-gray-300 text-[9px] uppercase tracking-wide">
                     {statLabel}
                   </span>
                   <span className="w-8 text-right font-mono font-bold text-gray-800 dark:text-gray-100 pr-2.5">
@@ -392,7 +392,7 @@ const PokemonDetail: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="rounded-2xl solid-card p-4.5 shadow-sm flex flex-col gap-3 transition-theme"
         >
-          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-555 dark:text-gray-400">
+          <h2 className="m-0 text-xs font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-400">
             Evolution Chain
           </h2>
           <div className="flex flex-wrap items-center justify-center gap-3 py-1">
@@ -498,14 +498,14 @@ const PokemonDetail: React.FC = () => {
                     <h3 className="m-0 text-sm font-extrabold text-green-500">
                       Successfully Caught!
                     </h3>
-                    <p className="text-xs text-gray-550 dark:text-gray-400 m-0 mt-1">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 m-0 mt-1">
                       Awesome! You successfully caught <strong>{capitalize(pokemon.name)}</strong>.
                     </p>
                   </div>
 
                   {/* Nickname input form */}
                   <div className="space-y-1 bg-white/20 dark:bg-black/20 p-3 rounded-xl border border-gray-300/10">
-                    <label className="text-[9px] font-extrabold text-gray-550 dark:text-gray-400 uppercase tracking-wide">
+                    <label className="text-[9px] font-extrabold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                       Give Nickname
                     </label>
                     <input

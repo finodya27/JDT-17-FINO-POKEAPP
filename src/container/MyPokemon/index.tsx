@@ -52,7 +52,7 @@ const MyPokemon: React.FC = () => {
               Your Bag is Empty
             </h2>
             <p className="text-[11px] text-gray-500 dark:text-gray-400 max-w-xs mx-auto m-0 leading-relaxed">
-              You haven't caught any Pokémon yet! Go back to the Pokedex to search for wild Pokémon and try your catch luck.
+              You haven't caught any Pokémon yet! Go back to Home to search for wild Pokémon and try your catch luck.
             </p>
           </div>
           <Link to="/" className="no-underline">
@@ -113,7 +113,7 @@ const MyPokemon: React.FC = () => {
                             >
                               Save
                             </button>
-                            <span className="text-gray-455">|</span>
+                            <span className="text-gray-400">|</span>
                             <button
                               onClick={(e) => { e.stopPropagation(); setEditingId(null); }}
                               className="text-gray-500 hover:text-gray-600 cursor-pointer bg-none border-none p-0"
@@ -132,7 +132,7 @@ const MyPokemon: React.FC = () => {
                               e.stopPropagation();
                               startEdit(pokemon);
                             }}
-                            className="p-0.5 rounded text-gray-450 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer transition-colors shrink-0"
+                            className="p-0.5 rounded text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer transition-colors shrink-0"
                             title="Edit Nickname"
                           >
                             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
@@ -141,7 +141,7 @@ const MyPokemon: React.FC = () => {
                           </button>
                         </div>
                       )}
-                      <span className="text-[9px] font-bold text-gray-500 dark:text-gray-350 block mt-0.5 capitalize truncate">
+                      <span className="text-[9px] font-bold text-gray-500 dark:text-gray-400 block mt-0.5 capitalize truncate">
                         {capitalize(pokemon.name)} • {padId(pokemon.id)}
                       </span>
                     </div>
@@ -162,7 +162,7 @@ const MyPokemon: React.FC = () => {
 
                   {/* Captured Info and Badges */}
                   <div className="mt-1 space-y-1.5 z-10">
-                    <div className="flex justify-between items-center text-[8px] text-gray-500 dark:text-gray-350 font-extrabold border-b border-gray-250/20 dark:border-gray-800/40 pb-1">
+                    <div className="flex justify-between items-center text-[8px] text-gray-500 dark:text-gray-400 font-extrabold border-b border-gray-200/20 dark:border-gray-800/40 pb-1">
                       <span>Caught:</span>
                       <span className="text-gray-700 dark:text-gray-200">{pokemon.dateCaught.split(", ")[0]}</span>
                     </div>

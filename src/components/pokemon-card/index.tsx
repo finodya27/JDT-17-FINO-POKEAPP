@@ -21,11 +21,11 @@ const PokemonCard: React.FC<PokemonCardProps> = ({ name }) => {
     return (
       <div className="relative h-44 rounded-2xl solid-card animate-pulse flex flex-col justify-between p-3.5">
         <div className="flex justify-between items-start">
-          <div className="w-12 h-3.5 bg-gray-250 dark:bg-gray-700 rounded"></div>
-          <div className="w-8 h-3 bg-gray-250 dark:bg-gray-700 rounded-full"></div>
+          <div className="w-12 h-3.5 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          <div className="w-8 h-3 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
         </div>
-        <div className="self-center w-16 h-16 bg-gray-250 dark:bg-gray-700 rounded-full"></div>
-        <div className="w-10 h-4 bg-gray-250 dark:bg-gray-700 rounded-full"></div>
+        <div className="self-center w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+        <div className="w-10 h-4 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
       </div>
     );
   }

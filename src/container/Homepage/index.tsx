@@ -116,7 +116,7 @@ const PokemonGrid: React.FC<PokemonGridProps> = ({
           No Pokémon Found
         </h2>
         <p className="text-[11px] text-gray-500 dark:text-gray-400 max-w-xs mx-auto m-0 leading-relaxed">
-          Try searching another Pokémon name or ID, or clear type filters to view the Pokédex database.
+          Try searching another Pokémon name or ID, or clear type filters to view the Pokémon database.
         </p>
       </motion.div>
     );
@@ -243,7 +243,7 @@ const Homepage: React.FC = () => {
       {/* Title banner */}
       <div className="text-center space-y-1 py-1">
         <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white m-0">
-          Pokédex Database
+          Pokémon Database
         </h1>
         <p className="text-[11px] text-gray-500 dark:text-gray-400 max-w-xs mx-auto leading-relaxed m-0">
           Explore stats, animated sprites, and capture wild Pokémon dynamically from the PokéAPI database.
